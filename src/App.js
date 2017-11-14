@@ -6,11 +6,23 @@ import BooksList from './BooksList'
 import './App.css'
 
 class BooksApp extends React.Component {
+  state = {
+    books: []
+  }
+
+  componentDidMount() {
+    BooksAPI.getAll().then((books) => {
+      this.setState({books})
+    })
+  }
+
   render() {
     return (
       <div className="app">
         <Route exact path="/" render={() => (
-          <BooksList />
+          <BooksList
+            allBooks={this.state.books}
+          />
         )}/>
         <Route path='/create' render={({history}) => (
           <BooksSearch
