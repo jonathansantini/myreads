@@ -17,12 +17,12 @@ class BooksList extends Component {
           <h1>MyReads</h1>
         </div>
         <div className="list-books-content">
-          { config.shelfsList.map((shelf) => (
+          {config.shelfsList.map((shelf) => (
             <div key={shelf.id}>
               <BooksListShelf
                 id={shelf.id}
                 title={shelf.title}
-                shelfBooks={filterBooks(shelf.id)}
+                booksList={filterBooks(shelf.id)}
               />
             </div>
             ))
