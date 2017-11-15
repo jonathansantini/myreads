@@ -17,14 +17,26 @@ class BooksApp extends React.Component {
   }
 
   updateBook(book, shelf) {
-    this.setState((state) => ({
-      books: state.books.map((b) => {
-        if (book.id === b.id) {
-          b.shelf = shelf
-        }
-        return b
-      })
-    }))
+
+    const isAvail = this.state.books.filter((b) => b.id === book.id)
+    if (isAvail.length) {
+
+      this.setState(state => ({
+        books: state.books.map((b) => {
+          if (book.id === b.id) {
+            b.shelf = shelf
+          }
+          return b
+        })
+      }))
+
+    } else {
+
+      book.shelf = shelf
+      this.setState(state => ({
+        books: state.books.concat([ book ])
+      }))
+    }
 
     BooksAPI.update(book, shelf)
   }
@@ -40,10 +52,7 @@ class BooksApp extends React.Component {
         )}/>
         <Route path='/create' render={({history}) => (
           <BooksSearch
-            onBookInsert={(book) => {
-              this.insertBook(book)
-              history.push('/')
-            }}
+            onBookChange={(book, shelf) => this.updateBook(book, shelf)}
           />
         )}/>
       </div>
