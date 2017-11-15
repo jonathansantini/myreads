@@ -5,7 +5,7 @@ import config from './config'
 
 class BooksList extends Component {
   render() {
-    const { allBooks } = this.props
+    const { allBooks, onBookChange } = this.props
 
     const filterBooks = (id) => {
       return allBooks.filter((book) => book.shelf === id)
@@ -23,6 +23,7 @@ class BooksList extends Component {
                 id={shelf.id}
                 title={shelf.title}
                 booksList={filterBooks(shelf.id)}
+                onBookChange={onBookChange}
               />
             </div>
             ))

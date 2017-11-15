@@ -16,12 +16,26 @@ class BooksApp extends React.Component {
     })
   }
 
+  updateBook(book, shelf) {
+    this.setState((state) => ({
+      books: state.books.map((b) => {
+        if (book.id === b.id) {
+          b.shelf = shelf
+        }
+        return b
+      })
+    }))
+
+    BooksAPI.update(book, shelf)
+  }
+
   render() {
     return (
       <div className="app">
         <Route exact path="/" render={() => (
           <BooksList
             allBooks={this.state.books}
+            onBookChange={(book, shelf) => this.updateBook(book, shelf)}
           />
         )}/>
         <Route path='/create' render={({history}) => (
