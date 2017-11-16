@@ -4,7 +4,7 @@ class BooksGrid extends Component {
   handleBookChange = (e, book) => {
     const shelf = e.target.value;
     if (this.props.onBookChange) {
-      this.props.onBookChange(book, shelf)
+      this.props.onBookChange({ book, shelf })
     }
   }
 
@@ -17,7 +17,7 @@ class BooksGrid extends Component {
           <li key={book.id}>
             <div className="book">
               <div className="book-top">
-                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks && book.imageLinks.thumbnail})` }}></div>
                 <div className="book-shelf-changer">
                   <select value={book.shelf || `none`} onChange={(e) => this.handleBookChange(e, book)}>
                     <option value="none" disabled>Move to...</option>

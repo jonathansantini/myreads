@@ -16,28 +16,31 @@ class BooksApp extends React.Component {
     })
   }
 
-  updateBook(book, shelf) {
-
+  checkBookInList(book) {
     const isAvail = this.state.books.filter((b) => b.id === book.id)
-    if (isAvail.length) {
+    return isAvail.length ? true : false
+  }
 
-      this.setState(state => ({
-        books: state.books.map((b) => {
-          if (book.id === b.id) {
-            b.shelf = shelf
-          }
-          return b
-        })
-      }))
+  updateBook(data) {
+    const { book, shelf } = data
+    const currentBooks = this.state.books
+    let updatedBooks = []
 
+    if (this.checkBookInList(book)) {
+      updatedBooks = currentBooks.map((b) => {
+        if (book.id === b.id) {
+          b.shelf = shelf
+        }
+        return b
+      })
     } else {
-
       book.shelf = shelf
-      this.setState(state => ({
-        books: state.books.concat([ book ])
-      }))
+      updatedBooks = currentBooks.concat([book])
     }
 
+    this.setState(state => ({
+      books: updatedBooks
+    }))
     BooksAPI.update(book, shelf)
   }
 
@@ -47,12 +50,13 @@ class BooksApp extends React.Component {
         <Route exact path="/" render={() => (
           <BooksList
             allBooks={this.state.books}
-            onBookChange={(book, shelf) => this.updateBook(book, shelf)}
+            onBookChange={(data) => this.updateBook(data)}
           />
         )}/>
         <Route path='/create' render={({history}) => (
           <BooksSearch
-            onBookChange={(book, shelf) => this.updateBook(book, shelf)}
+            allBooks={this.state.books}
+            onBookChange={(data) => this.updateBook(data)}
           />
         )}/>
       </div>
