@@ -33,6 +33,7 @@ class BooksApp extends React.Component {
     // Checks if book passed is already set in state.
     const inList = this.state.books.filter((b) => b.id === book.id);
     if (inList.length) {
+      // When book is in list, update shelf.
       updatedBooks = currentBooks.map((b) => {
         if (book.id === b.id) {
           b.shelf = shelf;
@@ -40,6 +41,7 @@ class BooksApp extends React.Component {
         return b;
       })
     } else {
+      // Otherwise, add shelf to book obj and add it to list.
       book.shelf = shelf;
       updatedBooks = currentBooks.concat([book]);
     }
