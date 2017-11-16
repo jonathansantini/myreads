@@ -1,3 +1,6 @@
+/**
+  * Config used to set the UI.
+  */
 export default {
   shelfsList: [
     {

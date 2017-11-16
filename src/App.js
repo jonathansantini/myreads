@@ -1,10 +1,14 @@
-import React from 'react'
-import * as BooksAPI from './BooksAPI'
-import { Route } from 'react-router-dom'
-import BooksSearch from './BooksSearch'
-import BooksList from './BooksList'
-import './App.css'
+import React from 'react';
+import * as BooksAPI from './BooksAPI';
+import { Route } from 'react-router-dom';
+import BooksSearch from './BooksSearch';
+import BooksList from './BooksList';
+import './App.css';
 
+/**
+* Main class used as the parent component to the app.
+* @extends React.Component
+*/
 class BooksApp extends React.Component {
   state = {
     books: []
@@ -12,36 +16,40 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      this.setState({books})
+      this.setState({books});
     })
   }
 
-  checkBookInList(book) {
-    const isAvail = this.state.books.filter((b) => b.id === book.id)
-    return isAvail.length ? true : false
-  }
-
+  /**
+  * Used to update or add a book to the BooksAPI.
+  * @param {object} book - Book object passed from the API.
+  * @param {string} shelf - Name of shelf to assign. (i.e. currentlyReading, wantToRead, read)
+  */
   updateBook(data) {
-    const { book, shelf } = data
-    const currentBooks = this.state.books
-    let updatedBooks = []
+    const { book, shelf } = data;
+    const currentBooks = this.state.books;
+    let updatedBooks = [];
 
-    if (this.checkBookInList(book)) {
+    // Checks if book passed is already set in state.
+    const inList = this.state.books.filter((b) => b.id === book.id);
+    if (inList.length) {
       updatedBooks = currentBooks.map((b) => {
         if (book.id === b.id) {
-          b.shelf = shelf
+          b.shelf = shelf;
         }
-        return b
+        return b;
       })
     } else {
-      book.shelf = shelf
-      updatedBooks = currentBooks.concat([book])
+      book.shelf = shelf;
+      updatedBooks = currentBooks.concat([book]);
     }
 
+    // Set state with modified updatedBooks.
     this.setState(state => ({
       books: updatedBooks
     }))
-    BooksAPI.update(book, shelf)
+    // Call API to make sure it is sync'd with state.
+    BooksAPI.update(book, shelf);
   }
 
   render() {
@@ -53,7 +61,7 @@ class BooksApp extends React.Component {
             onBookChange={(data) => this.updateBook(data)}
           />
         )}/>
-        <Route path='/create' render={({history}) => (
+        <Route path="/create" render={({history}) => (
           <BooksSearch
             allBooks={this.state.books}
             onBookChange={(data) => this.updateBook(data)}
@@ -64,4 +72,4 @@ class BooksApp extends React.Component {
   }
 }
 
-export default BooksApp
+export default BooksApp;

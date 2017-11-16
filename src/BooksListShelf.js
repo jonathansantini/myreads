@@ -1,7 +1,17 @@
-import React, { Component } from 'react'
-import BooksGrid from './BooksGrid'
+import React, { Component } from 'react';
+import BooksGrid from './BooksGrid';
+import PropTypes from 'prop-types';
 
+/**
+* Controlled component used to display each shelf row.
+* @extends React.Component
+*/
 class BooksListShelf extends Component {
+  static propTypes = {
+    booksList: PropTypes.array.isRequired,
+    onBookChange: PropTypes.func.isRequired
+  }
+
   render() {
     return (
       <div className={`bookshelf ${this.props.id}`}>
@@ -17,4 +27,4 @@ class BooksListShelf extends Component {
   }
 }
 
-export default BooksListShelf
+export default BooksListShelf;
