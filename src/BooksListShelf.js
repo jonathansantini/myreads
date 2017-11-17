@@ -1,30 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 import BooksGrid from './BooksGrid';
 import PropTypes from 'prop-types';
 
 /**
-* Controlled component used to display each shelf row.
+* Functional component used to display each shelf row.
 * @extends React.Component
 */
-class BooksListShelf extends Component {
-  static propTypes = {
-    booksList: PropTypes.array.isRequired,
-    onBookChange: PropTypes.func.isRequired
-  }
+function BooksListShelf (props) {
+  const { id, title, booksList, onBookChange } = props;
 
-  render() {
-    return (
-      <div className={`bookshelf ${this.props.id}`}>
-        <h2 className="bookshelf-title">{this.props.title}</h2>
-        <div className="bookshelf-books">
-          <BooksGrid
-            booksList={this.props.booksList}
-            onBookChange={this.props.onBookChange}
-          />
-        </div>
+  return (
+    <div className={`bookshelf ${id}`}>
+      <h2 className="bookshelf-title">{title}</h2>
+      <div className="bookshelf-books">
+        <BooksGrid
+          booksList={booksList}
+          onBookChange={onBookChange}
+        />
       </div>
-    )
-  }
+    </div>
+  )
+}
+
+BooksListShelf.propTypes = {
+  booksList: PropTypes.array.isRequired,
+  onBookChange: PropTypes.func.isRequired
 }
 
 export default BooksListShelf;

@@ -10,8 +10,11 @@ import './App.css';
 * @extends React.Component
 */
 class BooksApp extends React.Component {
-  state = {
-    books: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      books: []
+    };
   }
 
   componentDidMount() {
@@ -45,13 +48,12 @@ class BooksApp extends React.Component {
       book.shelf = shelf;
       updatedBooks = currentBooks.concat([book]);
     }
-
+    // Call API to make sure it is sync'd with state.
+    BooksAPI.update(book, shelf);
     // Set state with modified updatedBooks.
     this.setState(state => ({
       books: updatedBooks
     }))
-    // Call API to make sure it is sync'd with state.
-    BooksAPI.update(book, shelf);
   }
 
   render() {
@@ -63,7 +65,7 @@ class BooksApp extends React.Component {
             onBookChange={(data) => this.updateBook(data)}
           />
         )}/>
-        <Route path="/create" render={({history}) => (
+        <Route path="/search" render={({history}) => (
           <BooksSearch
             allBooks={this.state.books}
             onBookChange={(data) => this.updateBook(data)}

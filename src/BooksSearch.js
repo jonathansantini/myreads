@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import * as BooksAPI from './BooksAPI';
 import BooksGrid from './BooksGrid';
 
@@ -9,14 +10,17 @@ import BooksGrid from './BooksGrid';
 * @extends React.Component
 */
 class BooksSearch extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      query: '',
+      searchBooks: []
+    };
+  }
+
   static propTypes = {
     allBooks: PropTypes.array.isRequired,
     onBookChange: PropTypes.func.isRequired
-  }
-
-  state = {
-    query: '',
-    searchBooks: []
   }
 
   clearQuery = () => {
@@ -30,16 +34,18 @@ class BooksSearch extends Component {
   * Function used to handle what happens when the search query is updated.
   * @param {string} query - Text string coming from the search input.
   */
-  onQueryChange = (query) => {
-    this.setState({
-      query: query.trim()
-    })
+  onQueryChange = (e) => {
+    const query = e.target.value || '';
 
     // BooksAPI call that returns a book list based on the query in state.
     BooksAPI.search(query.trim()).then(books => {
       this.setState(state => ({
-        searchBooks: books
+        searchBooks: books ? books : []
       }))
+    })
+
+    this.setState({
+      query: query.trim()
     })
   };
 
@@ -72,7 +78,7 @@ class BooksSearch extends Component {
               type="text"
               placeholder="Search by title or author"
               value={query}
-              onChange={(e) => this.onQueryChange(e.target.value)}
+              onChange={_.debounce(this.onQueryChange, 400, { 'leading': true })}
             />
             { this.state.query && (
               <button
