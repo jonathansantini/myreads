@@ -190,3 +190,14 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+/* page not found */
+
+.page-not-found {
+  padding: 40px 0;
+  text-align: center;
+}
+
+.page-not-found__copy {
+  padding: 0 0 12px;
+}

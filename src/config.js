@@ -15,5 +15,6 @@ export default {
       id: 'read',
       title: 'Read'
     }
-  ]
+  ],
+  defaultBookThumb: 'http://via.placeholder.com/128x193?text=No%20Cover'
 }

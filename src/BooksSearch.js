@@ -35,17 +35,21 @@ class BooksSearch extends Component {
   * @param {string} query - Text string coming from the search input.
   */
   onQueryChange = (e) => {
-    const query = e.target.value || '';
+    const query = e.target.value;
 
     // BooksAPI call that returns a book list based on the query in state.
-    BooksAPI.search(query.trim()).then(books => {
-      this.setState(state => ({
-        searchBooks: books ? books : []
-      }))
+    BooksAPI.search(query).then(books => {
+      if (this.state.query.length) {
+        this.setState(state => ({
+          searchBooks: books && !books.error ? books : []
+        }));
+      } else {
+        this.clearQuery();
+      }
     })
 
     this.setState({
-      query: query.trim()
+      query
     })
   };
 

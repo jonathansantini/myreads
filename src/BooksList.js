@@ -6,7 +6,7 @@ import config from './config';
 
 /**
 * Functional component used to display book list UI.
-* @extends React.Component
+* @extends React
 */
 function BooksList(props) {
   const { allBooks, onBookChange } = props;
